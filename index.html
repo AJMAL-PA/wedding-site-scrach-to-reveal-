@@ -2156,7 +2156,7 @@
           </div>
 
           <div class="scroll-hint reveal reveal-delay-3"
-            style="position: relative !important; inset: auto !important; margin-top: 40px !important; display: flex !important; flex-direction: column !important; align-items: center !important;">
+            style="position: relative !important; inset: auto !important; margin-top: 15px !important; transform: translateY(-10px); display: flex !important; flex-direction: column !important; align-items: center !important;">
             <span class="blur-text" data-animate="letters" data-delay="60">Scroll</span>
             <svg class="scroll-arrow" width="14" height="22" viewBox="0 0 14 22" fill="none">
               <path d="M7 1 V19 M7 19 L1 13 M7 19 L13 13" stroke="#d4af37" stroke-width="1.2" stroke-linecap="round" />
@@ -2451,7 +2451,7 @@
   </footer>
 
   <!-- Audio Element -->
-  <audio id="bg-music" src="assets/WhatsApp%20Audio%202026-06-10%20at%202.48.03%20PM.mpeg" loop></audio>
+  <audio id="bg-music" src="assets/aud.MP3.mpeg" loop playsinline preload="auto"></audio>
 
   <script>
     /* ================================================================
@@ -2698,9 +2698,21 @@
         trailRAF = requestAnimationFrame(updateCursorTrail);
       }
 
+      let audioUnlocked = false;
+
       // Scratch interaction
       function startScratch(x, y) {
         if (scratchComplete) return;
+
+        if (!audioUnlocked) {
+          const bgMusic = document.getElementById('bg-music');
+          if (bgMusic) {
+            bgMusic.volume = 0.5;
+            bgMusic.play().catch(e => console.log("Audio unlock failed:", e));
+          }
+          audioUnlocked = true;
+        }
+
         isScratching = true;
         lastX = x;
         lastY = y;
